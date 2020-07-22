@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <script src="mraid.js"></script>
+    <script type="text/javascript">
+      function onMraidInit() {
+        if (mraid.getState() === "loading") {
+          mraid.addEventListener("ready", onSdkReady);
+        } else {
+          onSdkReady();
+        }
+      }
+      function onSdkReady() {
+        if (mraid.isViewable()) {
+          adDidAppear();
+        } else {
+          mraid.addEventListener("viewableChange", function (viewable) {
+            if (viewable) {
+              adDidAppear();
+            } else {
+              adDidDisappear();
+            }
+          });
+        }
+      }
+      function adDidAppear() {}
+      function adDidDisappear() {}
+      onMraidInit();
+    </script>
+  </head>
+  <body>
+    <div class="celtra-ad-v3">
+      <!-- logan_timestamp = raw $LG_TIMESTAMP -->
+      <img
+        src="data:image/png,celtra"
+        style="display: none;"
+        onerror="
+                (function(img) {
+                    var params = {'clickUrl':'$LG_CLICK_URL','expandDirection':'undefined','preferredClickThroughWindow':'new','clickEvent':'advertiser','iosAdvId':'$LG_DEVICE_ID','androidAdvId':'$LG_DEVICE_ID','externalAdServer':'Logan','tagVersion':'html-standard-7'};
+                    [].slice.apply(img.parentNode.childNodes).forEach(function(n) { var decfs = { urldecode: decodeURIComponent, htmldecode: function(v) { var d = document.createElement('div'); d.innerHTML = v; return d.textContent; }, eval: function(v) { return eval(v); }, raw: function(v) { return v; } }; var m; if (n.nodeType == 8 &amp;&amp; (m = n.textContent.match(/^&#92;s+([&#92;w%.]+)(&#92;[.+&#92;])?&#92;s+=&#92;s+(&#92;w+)&#92;s+(.*)$/i))) { try { params[m[1]+(m[2] || '')] = decfs[m[3]](m[4].replace(/^&#92;s+|&#92;s+$/g, '')); } catch (e) {} } });
+                    var req = document.createElement('script');
+                    req.id = params.scriptId = 'celtra-script-' + (window.celtraScriptIndex = (window.celtraScriptIndex||0)+1);
+                    params.clientTimestamp = new Date/1000;
+                    params.clientTimeZoneOffsetInMinutes = new Date().getTimezoneOffset();
+                    params.hostPageLoadId=window.celtraHostPageLoadId=window.celtraHostPageLoadId||(Math.random()+'').slice(2);
+                    var qs = '';
+                    for (var k in params) {
+                        qs += '&amp;' + encodeURIComponent(k) + '=' + encodeURIComponent(params[k]);
+                    }
+                    var src = 'https://ads.celtra.com/4d30bd9c/web.js?' + qs;
+                    req.src = src;
+                    img.parentNode.insertBefore(req, img.nextSibling);
+                })(this);
+            "
+      />
+    </div>
+  </body>
+</html>
